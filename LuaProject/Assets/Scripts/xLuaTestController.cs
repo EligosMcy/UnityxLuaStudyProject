@@ -1,8 +1,7 @@
-using System;
 using System.IO;
 using UnityEngine;
 using XLua;
-using static Tutorial.CSCallLua;
+
 public class xLuaTestController : MonoBehaviour
 {
     private LuaEnv luaEnv;
@@ -25,12 +24,12 @@ public class xLuaTestController : MonoBehaviour
         // Person person = luaEnv.Global.Get<Person>("Person");
         // Debug.Log(person.name + person.age + person.home);
 
-        //
-        IPerson iPerson = luaEnv.Global.Get<IPerson>("Person"); //映射到interface实例，by ref，这个要求interface加到生成列表，否则会返回null，建议用法
+        //Interface 使用接口进行 进行 table 映射使用
+        IPerson iPerson = luaEnv.Global.Get<IPerson>("Person");
         Debug.Log(iPerson.name + "-" + iPerson.age);
 
-        // iPerson.name = "Eligos2";
-        // luaEnv.DoString("print(Person.name)");
+        iPerson.name = "Eligos2";
+        luaEnv.DoString("print(Person.name)");
     }
 
 
