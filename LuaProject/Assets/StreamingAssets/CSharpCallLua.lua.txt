@@ -1,0 +1,7 @@
+print('hello world')
+
+name = 'Eligos'
+age = 26
+home = 'China'
+
+Person = {name = "Eligos Son", age = 261, home = "JiangXi"}
