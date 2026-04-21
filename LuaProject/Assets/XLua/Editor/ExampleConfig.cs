@@ -272,7 +272,84 @@ public static class ExampleConfig
                 new List<string>(){"System.IO.DirectoryInfo", "CreateSubdirectory", "System.String", "System.Security.AccessControl.DirectorySecurity"},
                 new List<string>(){"System.IO.DirectoryInfo", "Create", "System.Security.AccessControl.DirectorySecurity"},
                 new List<string>(){"UnityEngine.MonoBehaviour", "runInEditMode"},
+                
+                // Span类型黑名单配置 - Unity 6.3.9兼容性修复
+                new List<string>(){"UnityEngine.AnimationCurve", "SetKeys", "System.ReadOnlySpan<UnityEngine.Keyframe>"},
+                new List<string>(){"UnityEngine.AnimationCurve", "GetKeys", "System.Span<UnityEngine.Keyframe>"},
+                new List<string>(){"UnityEngine.TextAsset", ".ctor", "System.ReadOnlySpan<byte>"},
+                new List<string>(){"UnityEngine.TextAsset", "SetBytes", "System.ReadOnlySpan<byte>"},
+                new List<string>(){"UnityEngine.TextAsset", ".ctor", "System.ReadOnlySpan<byte>", "bool"},
+                new List<string>(){"UnityEngine.Resources", "AreAllAssetsLoaded", "System.ReadOnlySpan<UnityEngine.EntityId>", "System.Span<bool>"},
+                new List<string>(){"UnityEngine.Resources", "AreAllAssetsLoaded", "System.ReadOnlySpan<int>", "System.Span<bool>"},
+                new List<string>(){"UnityEngine.Transform", "TransformDirection", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "TransformDirection", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "InverseTransformDirection", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "InverseTransformDirection", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "TransformVector", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "TransformVector", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "InverseTransformVector", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "InverseTransformVector", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "TransformPoint", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "TransformPoint", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "InverseTransformPoint", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.Transform", "InverseTransformPoint", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.Span<UnityEngine.Vector3>"},
+                new List<string>(){"UnityEngine.GameObject", "SetActive", "System.ReadOnlySpan<UnityEngine.EntityId>", "bool"},
+                new List<string>(){"UnityEngine.Object", "Instantiate", "UnityEngine.Object", "int", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.ReadOnlySpan<UnityEngine.Quaternion>"},
+                new List<string>(){"UnityEngine.Object", "Instantiate", "UnityEngine.Object", "int", "UnityEngine.Transform", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.ReadOnlySpan<UnityEngine.Quaternion>"},
+                new List<string>(){"UnityEngine.Object", "Instantiate", "UnityEngine.Object", "int", "UnityEngine.Transform", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.ReadOnlySpan<UnityEngine.Quaternion>", "System.Threading.CancellationToken"},
+                new List<string>(){"UnityEngine.Object", "Instantiate", "UnityEngine.Object", "int", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.ReadOnlySpan<UnityEngine.Quaternion>", "UnityEngine.InstantiateParameters", "System.Threading.CancellationToken"},
+                new List<string>(){"UnityEngine.Object", "Instantiate", "UnityEngine.Object", "int", "System.ReadOnlySpan<UnityEngine.Vector3>", "System.ReadOnlySpan<UnityEngine.Quaternion>", "UnityEngine.InstantiateParameters"},
             };
+
+    // Span类型通用过滤器 - Unity 6.3.9兼容性修复
+    [BlackList]
+    public static Func<MemberInfo, bool> SpanMethodFilter = (memberInfo) =>
+    {
+        if (memberInfo.MemberType == MemberTypes.Method)
+        {
+            var methodInfo = memberInfo as MethodInfo;
+            if (methodInfo != null)
+            {
+                // 检查方法参数是否包含Span类型
+                var parameters = methodInfo.GetParameters();
+                foreach (var param in parameters)
+                {
+                    var paramType = param.ParameterType;
+                    if (paramType.IsGenericType)
+                    {
+                        var genericType = paramType.GetGenericTypeDefinition();
+                        if (genericType == typeof(Span<>) || genericType == typeof(ReadOnlySpan<>))
+                        {
+                            return true;
+                        }
+                    }
+                    
+                    // 检查参数类型名称是否包含Span
+                    if (paramType.FullName != null && paramType.FullName.Contains("Span"))
+                    {
+                        return true;
+                    }
+                }
+                
+                // 检查返回类型是否包含Span类型
+                var returnType = methodInfo.ReturnType;
+                if (returnType.IsGenericType)
+                {
+                    var genericType = returnType.GetGenericTypeDefinition();
+                    if (genericType == typeof(Span<>) || genericType == typeof(ReadOnlySpan<>))
+                    {
+                        return true;
+                    }
+                }
+                
+                if (returnType.FullName != null && returnType.FullName.Contains("Span"))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
 
 #if UNITY_2018_1_OR_NEWER
     [BlackList]
@@ -301,6 +378,13 @@ public static class ExampleConfig
                 }
             }
         }
+        
+        // 同时应用Span过滤器
+        if (SpanMethodFilter(memberInfo))
+        {
+            return true;
+        }
+        
         return false;
     };
 #endif
