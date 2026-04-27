@@ -10,6 +10,7 @@ using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 
 using XLua;
 using System;
+using BaseLuaController;
 
 
 namespace XLua.CSObjectWrap

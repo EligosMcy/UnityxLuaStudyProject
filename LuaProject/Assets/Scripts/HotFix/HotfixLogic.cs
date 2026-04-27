@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using XLua;
 
-namespace DefaultNamespace
+namespace HotFix
 {
     [Hotfix]
     public class HotfixLogic : MonoBehaviour

@@ -11,6 +11,7 @@ using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using BaseLuaController;
 
 
 namespace XLua.CSObjectWrap
