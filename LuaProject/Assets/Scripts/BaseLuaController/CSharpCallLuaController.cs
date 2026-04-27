@@ -8,7 +8,7 @@ namespace BaseLuaController
     {
         private string _cSharpCallLuaName = "CSharpCallLua";
 
-        private LuaEnv _luaEnv = XLuaLoaderManager.Instance.LuaEnv;
+        private LuaEnv _luaEnv = xLuaLoaderManager.Instance.LuaEnv;
 
         private void Start()
         {

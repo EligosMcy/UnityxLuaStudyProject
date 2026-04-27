@@ -9,7 +9,7 @@ namespace BaseLuaController
 
         private void Start()
         {
-            XLuaLoaderManager.Instance.LuaEnv.DoString(_luaCallCSharpName);
+            xLuaLoaderManager.Instance.LuaEnv.DoString(_luaCallCSharpName);
         }
     }
 }
