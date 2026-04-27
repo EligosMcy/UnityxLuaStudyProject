@@ -1,0 +1,52 @@
+---1.1.1 点击宝箱领取金币钻石太拥挤，分散一点
+
+local UnityEngine = CS.UnityEngine
+local DefaultNamespace = CS.DefaultNamespace
+
+xlua.hotfix(DefaultNamespace.HotfixLogic,'CreatePrize',function(self)
+        for i = 0, 4 , 1 do
+
+            --修改 30 -> 40
+            local go = UnityEngine.GameObject.Instantiate(self.gold,self.transform.position + UnityEngine.Vecotr3(-10 + i * 30 , 0 , 0) , self.transform.rotation)
+            go.transform.SetParent(go.transfomr , self.canvas)
+
+            --修改 30 -> 40
+            local go1 = UnityEngine.GameObject.Instantiate(self.diamand,self.transform.position + UnityEngine.Vecotr3(0 , 30 , 0) + UnityEngine.Vector3(-10 + i * 30 , 0 , 0) , self.transform.rotation)
+            go1.transform.SetParent(go1.transfomr , self.canvas) 
+        end
+
+end)
+
+
+
+--1.1.2 玩家金币钻石不够时，没有进行相应处理
+
+--如果需要访问私有属性或者方式添加这段代码就行了
+xlua.private_accessible(DefaultNamespace.HotfixLogic)
+xlua.hotfix(DefaultNamespace.HotfixLogic,'Attack',function(self)
+        
+        --修改
+        if self.gold < 1 + (self.gunLevel - 1) * 2 or self.glod == 0 then
+            return
+        end
+
+        
+        if UnittEngine.Input.GetMouseButtonDown(0) then
+            self.bullectAudio.clip = self.bullectAudios[self.gunLevel - 1]
+            --self.bulletAUdio.Play(self);
+            self.bulletAudio:Play()
+        end
+
+        if self.Butterfly them
+            UnityEngine.GameObject.Instantiate(self.Bullects[self.gunLevel - 1],self.attackPos.position,self.attackPos.rotation * UnirtEngine.Quaternion.Enler(0,0,20))
+            UnityEngine.GameObject.Instantiate(self.Bullects[self.gunLevel - 1],self.attackPos.position,self.attackPos.rotation * UnirtEngine.Quaternion.Enler(0,0,-20))
+        end
+
+        UnityEngine.GameObject.Instantiate(self.Bullects[self.gunLevel],self.attackPos.position,self.       ttackPos.rotation)
+
+        if not self.canShootForFree then
+            self.GoldChange(-1 - (self.gunLevel -1) * 2)
+        end
+
+        self.attackCD = 0
+end) 

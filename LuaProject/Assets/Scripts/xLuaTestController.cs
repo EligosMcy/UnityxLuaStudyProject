@@ -24,7 +24,7 @@ public class xLuaTestController : MonoBehaviour
         // Person person = luaEnv.Global.Get<Person>("Person");
         // Debug.Log(person.name + person.age + person.home);
 
-        //Interface 使用接口进行 进行 table 映射使用
+        //Interface 浣跨敤鎺ュ彛杩涜 杩涜 table 鏄犲皠浣跨敤
         IPerson iPerson = luaEnv.Global.Get<IPerson>("Person");
         Debug.Log(iPerson.name + "-" + iPerson.age);
 

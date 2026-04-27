@@ -1,0 +1,4 @@
+--关闭应用后清除注入
+
+xlua.hotfix(CS.Treasour,'CreatePrize' , nil)
+xlua.hotfix(CS.Gun,'Attack',nil)
