@@ -1,7 +1,89 @@
-print('hello world')
+print('CSharp Call Lua Start')
 
 name = 'Eligos'
 age = 26
 home = 'China'
 
-Person = {name = "Eligos Son", age = 261, home = "JiangXi"}
+Person = {
+    name = "Eligos Son",
+    age = 21,
+    home = "JiangXi",
+
+    -- 两种写法
+    -- 1.使用.连接需要添加 自身对象参数.
+    Eat = function()
+        print("Eat Food")
+    end,
+
+    EatManyFood = function(self, a, b)
+        print('Eat ' .. a + b .. ' Food')
+    end
+}
+
+--[[
+    2.使用:连接不需要添加 自身对象参数
+    function Person:Eat()
+    print("Eat Food")
+    end
+    function Person:EatManyFood(a,b)
+    print('Eat ' .. a+b .. ' Food')
+    end
+]]
+
+ListByValue = {
+    name = "Eligos List",
+    age = 21,
+    home = "China",
+    1,
+    2,
+    "Baidu",
+    3,
+    "Com",
+    4,
+    true,
+    5,
+}
+
+DictionaryByValue = {
+    name = "Eligos Dictionary",
+    age = "21",
+    home = "JiangXi",
+    1,
+    2,
+    3,
+    4,
+    5,
+}
+
+PersonLuaTable = {
+    name = "Eligos Son",
+    age = 21,
+    home = "JiangXi",
+
+    -- 两种写法
+    -- 1.使用.连接需要添加 自身对象参数.
+    Eat = function()
+        print("Eat Food")
+    end,
+
+    EatManyFood = function(self, a, b)
+        print('Eat ' .. a + b .. ' Food')
+    end
+}
+
+function Add()
+    print('Add')
+end
+
+
+function AddNumber(a, b)
+    print('Add ' .. a + b)
+end
+
+
+function AddNumberReturn(a, b, c)
+    print('Add ' .. a + b .. ' Return a+b , ref c+1 , out b+2')
+    return a + b, c + 1, b + 2
+end
+
+

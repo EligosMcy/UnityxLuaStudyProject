@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using XLua;
 
 namespace BaseLuaController
 {
@@ -7,9 +8,11 @@ namespace BaseLuaController
     {
         private string _luaCallCSharpName = "LuaCallCSharp";
 
+        private LuaEnv _luaEnv => xLuaLoaderManager.Instance.LuaEnv;
+
         private void Start()
         {
-            xLuaLoaderManager.Instance.LuaEnv.DoString(_luaCallCSharpName);
+            _luaEnv.DoString($"require '{_luaCallCSharpName}'");
         }
     }
 }

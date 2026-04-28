@@ -1,4 +1,13 @@
---关闭应用后清除注入
+-- 关闭应用后清除注入
 
-xlua.hotfix(CS.Treasour,'CreatePrize' , nil)
-xlua.hotfix(CS.Gun,'Attack',nil)
+local HotFix = CS.HotFix
+xlua.hotfix(HotFix.HotfixLogic, 'CreatePrize', nil)
+xlua.hotfix(HotFix.HotfixLogic, 'Attack', nil)
+xlua.hotfix(HotFix.HotfixLogic, 'Start', nil)
+
+--使用 util.hotfix_ex 进行热跟新的也使用 xlua.hotfix 取消
+xlua.hotfix(HotFix.HotfixLogic, 'Start', nil)
+
+xlua.hotfix(HotFix.HotfixLogic, 'GoldChange', nil)
+
+xlua.hotfix(HotFix.HotfixLogic, 'Update', nil)

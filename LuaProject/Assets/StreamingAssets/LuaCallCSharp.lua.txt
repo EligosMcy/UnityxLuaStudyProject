@@ -1,0 +1,37 @@
+
+--每次调用 CS.UnityEngine都是需要时间的
+--最好想这样先查找并且存下来,后续直接使用
+local Ue = CS.UnityEngine
+local UeGo = Ue.GameObject
+local Time = Ue.Time
+
+
+
+--1. Lua访问 静态属性和方法
+--创建游戏物体 , new 对象
+UeGo("Create By Lua")
+
+--使用和修改静态属性
+print(Time.deltaTime)
+Time.timeScale = 0.5
+
+--查找,修改属性
+local camera = UeGo.Find("Main Camera")
+camera.name = "Update by lua"
+
+
+--2. Lua访问 C#成员属性和方法
+local box = UeGo.Find("Box")
+box.name = "Update By LuaBox"
+
+--local boxCom = box.GetComponent(box,"BoxCollider")
+local boxCom = box:GetComponent("BoxCollider")
+UeGo.Destroy(boxCom)
+
+local boxMeshRenderer = box:GetComponent(typeof(Ue.Renderer))
+local mat = boxMeshRenderer.material
+mat.color = Ue.Color(1,0,0,1)
+
+--在Lua中调用一下C#的方法需要在方法上添加上 [LuaCallCSharp]
+
+

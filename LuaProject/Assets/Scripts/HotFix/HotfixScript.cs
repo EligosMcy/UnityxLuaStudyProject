@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 using XLua;
 
@@ -8,11 +9,16 @@ namespace HotFix
     {
         private LuaEnv _luaEnv;
 
-        private void Start()
+        private void Awake()
         {
             _luaEnv = new LuaEnv();
             _luaEnv.AddLoader(MyLoader);
             _luaEnv.DoString("require 'hotfixScriptLua'");
+        }
+
+        private void Start()
+        {
+           
         }
 
         private byte[] MyLoader(ref string filePath)

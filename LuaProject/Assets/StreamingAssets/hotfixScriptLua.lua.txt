@@ -1,29 +1,33 @@
----1.1.1 点击宝箱领取金币钻石太拥挤，分散一点
+--- 1.1.1 点击宝箱领取金币钻石太拥挤，分散一点
 
-local UnityEngine = CS.UnityEngine
-local DefaultNamespace = CS.DefaultNamespace
+local Ue = CS.UnityEngine
+local UeInput = Ue.Input
+local UeGameObj = Ue.GameObject
+local HotFix = CS.HotFix
+local UeQuaternion = Ue.Quaternion
 
-xlua.hotfix(DefaultNamespace.HotfixLogic,'CreatePrize',function(self)
-        for i = 0, 4 , 1 do
+xlua.hotfix(HotFix.HotfixLogic, 'CreatePrize', function(self)
+    for i = 0, 4, 1 do
 
-            --修改 30 -> 40
-            local go = UnityEngine.GameObject.Instantiate(self.gold,self.transform.position + UnityEngine.Vecotr3(-10 + i * 30 , 0 , 0) , self.transform.rotation)
-            go.transform.SetParent(go.transfomr , self.canvas)
+        -- 修改 30 -> 40
+        local go = UeGameObj.Instantiate(self.gold, self.transform.position + UnityEngine.Vecotr3(-10 + i * 30, 0, 0), self.transform.rotation)
+        go.transform.SetParent(go.transfomr, self.canvas)
 
-            --修改 30 -> 40
-            local go1 = UnityEngine.GameObject.Instantiate(self.diamand,self.transform.position + UnityEngine.Vecotr3(0 , 30 , 0) + UnityEngine.Vector3(-10 + i * 30 , 0 , 0) , self.transform.rotation)
-            go1.transform.SetParent(go1.transfomr , self.canvas) 
-        end
+        -- 修改 30 -> 40
+        local go1 = UeGameObj.Instantiate(self.diamand, self.transform.position + UnityEngine.Vecotr3(0, 30, 0) + UnityEngine.Vector3(-10 + i * 30, 0, 0), self.transform.rotation)
+        go1.transform.SetParent(go1.transfomr, self.canvas)
+    end
 
-end)
+end )
 
 
 
---1.1.2 玩家金币钻石不够时，没有进行相应处理
+-- 1.1.2 玩家金币钻石不够时，没有进行相应处理
 
---如果需要访问私有属性或者方式添加这段代码就行了
-xlua.private_accessible(DefaultNamespace.HotfixLogic)
-xlua.hotfix(DefaultNamespace.HotfixLogic,'Attack',function(self)
+-- 如果需要访问私有属性或者方式添加这段代码就行了
+xlua.private_accessible(HotFix.HotfixLogic)
+
+xlua.hotfix(HotFix.HotfixLogic,'Attack',function(self)
         
         --修改
         if self.gold < 1 + (self.gunLevel - 1) * 2 or self.glod == 0 then
@@ -31,18 +35,18 @@ xlua.hotfix(DefaultNamespace.HotfixLogic,'Attack',function(self)
         end
 
         
-        if UnittEngine.Input.GetMouseButtonDown(0) then
+        if UeInput.GetMouseButtonDown(0) then
             self.bullectAudio.clip = self.bullectAudios[self.gunLevel - 1]
             --self.bulletAUdio.Play(self);
             self.bulletAudio:Play()
         end
 
         if self.Butterfly them
-            UnityEngine.GameObject.Instantiate(self.Bullects[self.gunLevel - 1],self.attackPos.position,self.attackPos.rotation * UnirtEngine.Quaternion.Enler(0,0,20))
-            UnityEngine.GameObject.Instantiate(self.Bullects[self.gunLevel - 1],self.attackPos.position,self.attackPos.rotation * UnirtEngine.Quaternion.Enler(0,0,-20))
+            UeGameObj.Instantiate(self.Bullects[self.gunLevel - 1],self.attackPos.position,self.attackPos.rotation * UeQuaternion.Enler(0,0,20))
+            UeGameObj.Instantiate(self.Bullects[self.gunLevel - 1],self.attackPos.position,self.attackPos.rotation * UeQuaternion.Enler(0,0,-20))
         end
 
-        UnityEngine.GameObject.Instantiate(self.Bullects[self.gunLevel],self.attackPos.position,self.       ttackPos.rotation)
+        UeGameObj.Instantiate(self.Bullects[self.gunLevel],self.attackPos.position,self.       ttackPos.rotation)
 
         if not self.canShootForFree then
             self.GoldChange(-1 - (self.gunLevel -1) * 2)
@@ -50,3 +54,53 @@ xlua.hotfix(DefaultNamespace.HotfixLogic,'Attack',function(self)
 
         self.attackCD = 0
 end) 
+
+--1.2 技能和钻石扣太多了
+--这里要注意,修改的Start方法,所以加载需要在Awak方法里进行修改才会正常执行
+xlua.private_accessible(HotFix.HotFixLogic)
+
+xlua.hotfix(HotFix.HotFIxLogic,'Start',function(self)
+    self.reduceDiamands = 8
+end)
+
+--1.3 Boos撞击玩家数据变动都也要,并不是增加就是减少
+--这个需求不是通过修改整个Start方法实现修改的
+--而是在执行完Start方法后,添加一部分方法进行修改
+
+--util,这个文件是Xlua插件自带的需要将它放到你加载的文件夹中  [StreamingAssets]
+local util = require 'util'
+
+xlua.private_accessible(HotFix.HotFixLogic)
+
+--使用 util 和 hotfix_ex,修改具体功能
+util.hotfix_ex(HotFix.HotFixLogic,'Start',function(self)
+
+    --这里注意,因为使用的C#中的方法所以需要 Start 添加 [LuaCallCSharp]
+    self.Start(self)
+    self.m_ReduceGold = self.m_ReduceGold - 20
+end)
+
+
+-- 1.4 当扣除数量不够后会出现负数
+util.hotfix_ex(HotFix.HotFixLogic,'GoldChange',function(self number)
+    self.GoldChange(self,number)
+    if self.glod < -number then
+        self.glod = 0
+        return
+    end
+end)
+
+
+xlua.private_accessible(HotFix.HotFixLogic)
+xlua.hotfix(HotFix.HotFixLogic,'Update',function(self)
+    self:CreateALotOfFish()
+    --这里完整重写新的方法
+
+    --这里出现一个问题 类型需要转换(int , float)
+    --默认 Random.Range 调用的是 float 类型的方法
+    --使用 Mathf.Floor 向下取整数
+
+    self.num = Ue.Mathf.Floor(Ue.Random.Range(0,4))
+
+
+end)
