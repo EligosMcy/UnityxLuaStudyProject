@@ -11,3 +11,15 @@ xlua.hotfix(HotFix.HotfixLogic, 'Start', nil)
 xlua.hotfix(HotFix.HotfixLogic, 'GoldChange', nil)
 
 xlua.hotfix(HotFix.HotfixLogic, 'Update', nil)
+
+
+--对空类方法进行注销
+xlua.hotfix(HotFix.HotFixEmpty, 'Start',nil)
+
+xlua.hotfix(HotFix.HotFixEmpty, 'Update',nil)
+
+xlua.hotfix(HotFix.HotFixEmpty, 'OnTriggerEnter',nil)
+
+xlua.hotfix(HotFix.HotFixEmpty, 'behaviourMethod01',nil)
+
+xlua.hotfix(HotFix.HotFixEmpty, 'behaviourMethod02',nil)

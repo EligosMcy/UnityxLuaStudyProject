@@ -1,7 +1,7 @@
 using UnityEngine;
 using XLua;
 
-namespace HotFix
+namespace HotFixScripts
 {
     [Hotfix]
     public class HotFixNewTest : MonoBehaviour

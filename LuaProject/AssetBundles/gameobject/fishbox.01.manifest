@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.3.9f1
+CRC: 2091555595
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8dc8ecd2df26ea08bfc9283c174daa0d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: af33ec919e3192a365d243cf42d8bb55
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 68081085616f0d263cd875a2ba9b2aef
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Prefabs/Fish_Box_01.prefab
+Dependencies: []

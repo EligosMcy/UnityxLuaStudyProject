@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.3.9f1
+CRC: 722938513
+HashAppended: 0
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: unifiedraytracing
+      Dependencies: {}
+    Info_1:
+      Name: gameobject/fishbox.01
+      Dependencies: {}
+    Info_2:
+      Name: gameobject/fishbox.02
+      Dependencies: {}
+    Info_3:
+      Name: gameobject/uibox.01
+      Dependencies: {}

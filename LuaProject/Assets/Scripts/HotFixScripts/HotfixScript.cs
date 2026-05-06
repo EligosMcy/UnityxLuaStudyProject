@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 using XLua;
 
-namespace HotFix
+namespace HotFixScripts
 {
     public class HotfixScript : MonoBehaviour
     {

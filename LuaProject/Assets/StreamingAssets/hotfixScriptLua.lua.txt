@@ -3,7 +3,7 @@
 local Ue = CS.UnityEngine
 local UeInput = Ue.Input
 local UeGameObj = Ue.GameObject
-local HotFix = CS.HotFix
+local HotFix = CS.HotFixScripts
 local UeQuaternion = Ue.Quaternion
 
 xlua.hotfix(HotFix.HotfixLogic, 'CreatePrize', function(self)
@@ -102,5 +102,42 @@ xlua.hotfix(HotFix.HotFixLogic,'Update',function(self)
 
     self.num = Ue.Mathf.Floor(Ue.Random.Range(0,4))
 
+
+    --ab包资源加载和使用,生成新鱼
+    HotFix.AssetBundleLoaderManager.LoadAssetBundle('Fish_Box_01','gameobject\\fishbox.01')
+
+    newFish = HotFix.AssetBundleLoaderManager.GetGameObject('Fish_Box_01')
+
+    self.CreateGameObject(newFish)
+
+    --web ab包资源加载和使用
+    --WebLoadAssetBundle它不再是静态方法,所以需要获取到应用来使用:调用
+    self.assetBundleLoaderManager:WebLoadAssetBundle('Fish_Box_01','gameobject\\fishbox.01')
+
+    newFish = HotFix.AssetBundleLoaderManager.GetGameObject('Fish_Box_01')
+
+    self.CreateGameObject(newFish)
+
+end)
+
+xlua.private_accessible(HotFix.HotFixEmpty)
+xlua.hotfix(HotFix.HotFixEmpty, 'Start',function(self)
+
+end)
+
+xlua.hotfix(HotFix.HotFixEmpty, 'Update',function(self)
+
+end)
+
+--这个是OnTriggerEnter方法是有参数的 Collider other,需要写入
+xlua.hotfix(HotFix.HotFixEmpty, 'OnTriggerEnter',function(self,other)
+
+end)
+
+xlua.hotfix(HotFix.HotFixEmpty, 'behaviourMethod01',function(self)
+
+end)
+
+xlua.hotfix(HotFix.HotFixEmpty, 'behaviourMethod02',function(self)
 
 end)
